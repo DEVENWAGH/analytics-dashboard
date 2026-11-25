@@ -1,15 +1,17 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { DollarSign } from "lucide-react";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
 import { StatCard } from "@/components/stats/StatCard";
 import { StatusBadge } from "@/components/transactions/StatusBadge";
 import { DashboardProvider } from "@/context/DashboardContext";
 import { customersList, monthlySeries, transactions } from "@/data/mock";
 
+const originalFetch = globalThis.fetch;
+
 afterEach(() => {
   cleanup();
-  vi.restoreAllMocks();
+  globalThis.fetch = originalFetch;
 });
 
 describe("StatCard", () => {
@@ -42,18 +44,16 @@ describe("StatusBadge", () => {
 
 describe("DateRangeFilter", () => {
   beforeEach(() => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({
+    globalThis.fetch = (async () =>
+      new Response(
+        JSON.stringify({
           series: monthlySeries,
           transactions,
           customers: customersList,
           source: "mock",
         }),
-      }),
-    );
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      )) as typeof fetch;
   });
 
   test("shows validation error when start date is after end date and resets cleanly", () => {
