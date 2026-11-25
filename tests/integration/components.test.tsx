@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { DollarSign } from "lucide-react";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
@@ -56,12 +56,16 @@ describe("DateRangeFilter", () => {
       )) as typeof fetch;
   });
 
-  test("shows validation error when start date is after end date and resets cleanly", () => {
+  test("shows validation error when start date is after end date and resets cleanly", async () => {
     render(
       <DashboardProvider>
         <DateRangeFilter />
       </DashboardProvider>,
     );
+
+    await act(async () => {
+      await Promise.resolve();
+    });
 
     const startInput = screen.getByLabelText("Start");
     const endInput = screen.getByLabelText("End");
