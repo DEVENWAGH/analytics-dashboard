@@ -17,7 +17,11 @@ export type DashboardData = {
 
 const noId = { projection: { _id: 0 } } as const;
 
-export async function seedDatabase({ reset = false } = {}) {
+declare global {
+  var _seedPromise: Promise<{ seeded: boolean }> | undefined;
+}
+
+async function runSeed(reset: boolean): Promise<{ seeded: boolean }> {
   const db = await getDb();
 
   if (reset) {
@@ -32,13 +36,60 @@ export async function seedDatabase({ reset = false } = {}) {
   if (existing > 0) return { seeded: false };
 
   await Promise.all([
-    db.collection("monthly").insertMany(monthlySeries.map((row) => ({ ...row }))),
-    db.collection("transactions").insertMany(transactions.map((row) => ({ ...row }))),
-    db.collection("customers").insertMany(customersList.map((row) => ({ ...row }))),
+    db.collection("monthly").bulkWrite(
+      monthlySeries.map((row) => ({
+        updateOne: {
+          filter: { date: row.date },
+          update: { $setOnInsert: { ...row } },
+          upsert: true,
+        },
+      })),
+    ),
+    db.collection("transactions").bulkWrite(
+      transactions.map((row) => ({
+        updateOne: {
+          filter: { id: row.id },
+          update: { $setOnInsert: { ...row } },
+          upsert: true,
+        },
+      })),
+    ),
+    db.collection("customers").bulkWrite(
+      customersList.map((row) => ({
+        updateOne: {
+          filter: { id: row.id },
+          update: { $setOnInsert: { ...row } },
+          upsert: true,
+        },
+      })),
+    ),
   ]);
-  await db.collection("transactions").createIndex({ date: -1 });
+  await Promise.all([
+    db.collection("transactions").createIndex({ date: -1 }),
+    db.collection("transactions").createIndex({ id: 1 }, { unique: true }),
+    db.collection("customers").createIndex({ id: 1 }, { unique: true }),
+    db.collection("monthly").createIndex({ date: 1 }, { unique: true }),
+  ]);
 
   return { seeded: true };
+}
+
+export async function seedDatabase({ reset = false } = {}) {
+  if (!reset && globalThis._seedPromise) {
+    return globalThis._seedPromise;
+  }
+
+  const promise = runSeed(reset).finally(() => {
+    if (globalThis._seedPromise === promise) {
+      globalThis._seedPromise = undefined;
+    }
+  });
+
+  if (!reset) {
+    globalThis._seedPromise = promise;
+  }
+
+  return promise;
 }
 
 export async function loadDashboardData(): Promise<DashboardData> {
