@@ -16,7 +16,7 @@ const RevenueLineChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-[320px] animate-pulse rounded-[10px] border border-border bg-card" />
+      <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
     ),
   },
 );
@@ -27,7 +27,7 @@ const OrdersBarChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-[320px] animate-pulse rounded-[10px] border border-border bg-card" />
+      <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
     ),
   },
 );
