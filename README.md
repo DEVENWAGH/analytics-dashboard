@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Northline Analytics Dashboard
 
-## Getting Started
+1-week Mahity assignment: responsive analytics dashboard built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **Recharts**.
 
-First, run the development server:
+> Note: The brief listed React Router. This project uses Next.js file-based routing instead. Confirm with HR if they require CRA + React Router strictly.
+
+## Features
+
+- Sidebar + top navbar (drawer on mobile)
+- Overview with 4 stats cards (Revenue, Users, Orders, Growth)
+- Line chart (monthly revenue) and bar chart (monthly orders) with tooltips
+- Date range filter with reset and invalid-range handling
+- Transactions table: search, status filter, pagination, empty state
+- Loading and error states (demo controls on Settings)
+- Pages: Overview, Analytics, Transactions, Customers, Settings
+- **Task progress** page with completion chart and Mon–Fri checklist
+- Bonus: CSV export on Transactions
+
+## Stack
+
+| Tool | Role |
+|------|------|
+| Next.js 16 | App, routing, deploy target |
+| TypeScript | Typed components and data |
+| Tailwind CSS 4 | Layout and theme |
+| Recharts | Chart rendering |
+| D3 | Color scales, averages, number formats |
+| Lucide React | Icons |
+| date-fns | Date validation / filtering |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd analytics-dashboard
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the local dev server URL shown in your terminal.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run dev    # local development
+bun run build  # production build
+bun run start  # serve production build
+bun run lint   # ESLint
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```text
+src/
+  app/                 # routes (overview, analytics, transactions, …)
+  components/
+    layout/            # sidebar, navbar, shell
+    stats/             # reusable stat cards
+    charts/            # revenue line + orders bar
+    filters/           # date range filter
+    transactions/      # table + status badge
+    progress/          # assignment status chart
+    ui/                # loading, error, empty
+  context/             # dashboard date + data state
+  data/                # mock series, transactions, checklist
+  lib/                 # utils, filters, csv
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Stripe / Linear inspired light theme:
 
-## Deploy on Vercel
+- Background `#F8F9FA`, white surfaces, charcoal text `#171717`
+- Muted indigo accent `#5B5BD6`
+- Geist typography, 8–12px radius, minimal shadows
+- Dense but calm dashboard layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Data / database (MongoDB)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Start MongoDB locally or use a MongoDB connection string
+2. Copy `.env.example` to `.env.local` and set `MONGODB_URI`
+3. `bun run dev`: the first request to `/api/dashboard` seeds the database automatically
+
+If MongoDB is not running, the app falls back to built-in sample data.
+
+- Live export: **Transactions → Export CSV** (filtered rows)
+- Static sample: [`public/sample-transactions.csv`](./public/sample-transactions.csv) or **Sample CSV** on the Transactions page
+- Reseed: **Settings → Reseed MongoDB**
+
+## Themes
+
+Light (default), Dark, and Retro (8-bit) via `next-themes`. Switch in the navbar or Settings.
+
+## Deploy (Vercel)
+
+1. Push this folder to GitHub
+2. Import the repo in [Vercel](https://vercel.com)
+3. Framework preset: Next.js (auto-detected)
+4. Deploy
+
+Root directory should be `analytics-dashboard` if the repo parent also contains other folders.
+
+## Screenshots
+
+### 1. Overview (desktop)
+![Overview desktop](./public/screenshots/overview-desktop.png)
+
+### 2. Overview (mobile drawer)
+![Overview mobile drawer](./public/screenshots/overview-mobile.png)
+
+### 3. Transactions with filters
+![Transactions with filters](./public/screenshots/transactions-filtered.png)
+
+### 4. Task progress page
+![Task progress page](./public/screenshots/progress.png)
+
+## Author
+
+Deven Ishwar Wagh  
+9326126931  
+wagh1.2.3.002@gmail.com
