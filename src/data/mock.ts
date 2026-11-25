@@ -166,7 +166,7 @@ export const assignmentTasks: AssignmentTask[] = [
     day: "Friday",
     title: "Ship",
     items: [
-      { id: "f1", label: "README + screenshots", done: false },
+      { id: "f1", label: "README + screenshots", done: true },
       { id: "f2", label: "GitHub push + Vercel/Netlify deploy", done: false },
       { id: "f3", label: "Bonus: dark theme + CSV export", done: true },
     ],
