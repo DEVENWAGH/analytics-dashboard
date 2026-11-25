@@ -147,6 +147,7 @@ export function OrdersBarChart() {
                 radius={isRetro ? 0 : [5, 5, 0, 0]}
                 maxBarSize={42}
                 name="Orders"
+                isAnimationActive={false}
               >
                 {series.map((point) => (
                   <Cell

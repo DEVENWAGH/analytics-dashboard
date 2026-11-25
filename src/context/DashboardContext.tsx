@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -82,8 +83,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
         return res.json() as Promise<Payload>;
       })
       .then((payload) => {
-        setData(payload);
-        setLoading(false);
+        startTransition(() => {
+          setData(payload);
+          setLoading(false);
+        });
         try {
           sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
         } catch {
