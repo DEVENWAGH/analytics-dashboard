@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { mainNav, utilityNav } from "./nav";
+import { ThemeToggle } from "./ThemeToggle";
 
 type SidebarProps = {
   onNavigate?: () => void;
@@ -17,7 +18,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "flex h-full w-[var(--sidebar-width)] flex-col border-r border-border bg-card",
+        "flex h-full w-full flex-col border-r border-border bg-card lg:w-[var(--sidebar-width)]",
         className,
       )}
     >
@@ -53,7 +54,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
                     href={item.href}
                     onClick={onNavigate}
                     className={cn(
-                      "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2 text-[13px] font-medium transition-colors duration-150",
+                      "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2.5 text-[13px] font-medium transition-colors duration-150 lg:py-2",
                       active
                         ? "bg-accent-soft text-accent"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -89,7 +90,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
                     href={item.href}
                     onClick={onNavigate}
                     className={cn(
-                      "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2 text-[13px] font-medium transition-colors duration-150",
+                      "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2.5 text-[13px] font-medium transition-colors duration-150 lg:py-2",
                       active
                         ? "bg-accent-soft text-accent"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -106,7 +107,11 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
         </div>
       </nav>
 
-      <div className="border-t border-border p-4">
+      <div className="space-y-3 border-t border-border p-4">
+        <div className="flex items-center justify-between sm:hidden">
+          <span className="text-[12px] font-medium text-muted-foreground">Theme</span>
+          <ThemeToggle />
+        </div>
         <div className="rounded-[10px] border border-border bg-muted px-3 py-2.5">
           <p className="text-[12px] font-medium text-foreground">Mahity assignment</p>
           <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">

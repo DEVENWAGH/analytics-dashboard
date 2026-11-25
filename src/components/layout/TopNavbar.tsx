@@ -12,11 +12,11 @@ type TopNavbarProps = {
 export function TopNavbar({ title, subtitle, onMenuClick }: TopNavbarProps) {
   return (
     <header className="sticky top-0 z-20 flex h-[var(--navbar-height)] items-center justify-between gap-3 border-b border-border bg-card/90 px-4 backdrop-blur-md sm:px-6">
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
         <button
           type="button"
           onClick={onMenuClick}
-          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground transition-colors hover:bg-muted lg:hidden"
+          className="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground transition-colors hover:bg-muted lg:hidden"
           aria-label="Open navigation menu"
         >
           <Menu className="h-4 w-4" />
@@ -47,18 +47,20 @@ export function TopNavbar({ title, subtitle, onMenuClick }: TopNavbarProps) {
           />
         </label>
 
-        <ThemeToggle />
+        <div className="hidden sm:block">
+          <ThemeToggle />
+        </div>
 
         <button
           type="button"
-          className="relative inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground transition-colors hover:bg-muted"
+          className="relative inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground transition-colors hover:bg-muted sm:h-9 sm:w-9"
           aria-label="Notifications"
         >
           <Bell className="h-4 w-4" />
-          <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="absolute top-2.5 right-2.5 h-1.5 w-1.5 rounded-full bg-accent sm:top-2 sm:right-2" />
         </button>
 
-        <div className="ml-1 flex items-center gap-2 rounded-[8px] border border-border bg-card py-1 pr-2.5 pl-1">
+        <div className="flex shrink-0 items-center gap-2 rounded-[8px] border border-border bg-card p-1 sm:ml-1 sm:py-1 sm:pr-2.5 sm:pl-1">
           <div
             className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-white"
             aria-hidden

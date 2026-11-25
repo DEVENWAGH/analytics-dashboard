@@ -71,15 +71,15 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
             <button
               type="button"
-              className="absolute inset-0 cursor-pointer bg-foreground/30"
+              className="absolute inset-0 cursor-pointer bg-foreground/30 backdrop-blur-[1px]"
               aria-label="Close navigation menu"
               onClick={() => setMobileOpen(false)}
             />
-            <div className="relative flex h-full w-[min(100%,var(--sidebar-width))] flex-col bg-card shadow-xs">
+            <div className="relative flex h-full w-[min(85vw,var(--sidebar-width))] flex-col bg-card shadow-lg">
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-3 right-3 z-10 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground hover:bg-muted"
+                className="absolute top-3 right-3 z-10 inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-card text-foreground hover:bg-muted"
                 aria-label="Close menu"
               >
                 <X className="h-4 w-4" />
