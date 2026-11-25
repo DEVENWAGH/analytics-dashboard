@@ -39,10 +39,7 @@ export default function CustomersPage() {
           </thead>
           <tbody>
             {customersList.map((customer) => (
-              <tr
-                key={customer.id}
-                className="border-t border-border hover:bg-muted/40"
-              >
+              <tr key={customer.id} className="border-t border-border hover:bg-muted/40">
                 <td className="px-4 py-3">
                   <div className="font-medium text-foreground">{customer.name}</div>
                   <div className="text-[12px] text-muted-foreground">

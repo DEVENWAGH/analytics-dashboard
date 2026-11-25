@@ -18,7 +18,12 @@ export function TransactionsTable() {
 
   const rows = useMemo(() => {
     const source = rangeError ? ranged : ranged;
-    return filterTransactions(source, rangeError ? { start: "", end: "" } : range, search, status);
+    return filterTransactions(
+      source,
+      rangeError ? { start: "", end: "" } : range,
+      search,
+      status,
+    );
   }, [range, rangeError, ranged, search, status]);
 
   const pageCount = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
@@ -116,7 +121,9 @@ export function TransactionsTable() {
                       <div className="font-medium text-foreground">{row.customer}</div>
                       <div className="text-[12px] text-muted-foreground">{row.email}</div>
                     </td>
-                    <td className="px-4 py-3 tabular text-muted-foreground">{row.date}</td>
+                    <td className="px-4 py-3 tabular text-muted-foreground">
+                      {row.date}
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground">{row.method}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={row.status} />

@@ -53,10 +53,7 @@ export function SkeletonCards() {
   return (
     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div
-          key={i}
-          className="rounded-[10px] border border-border bg-card p-4"
-        >
+        <div key={i} className="rounded-[10px] border border-border bg-card p-4">
           <div className="flex items-start justify-between">
             <div className="h-3 w-16 animate-pulse rounded-[6px] bg-muted" />
             <div className="h-8 w-8 animate-pulse rounded-[8px] bg-muted" />

@@ -78,9 +78,7 @@ export function filterTransactions(
 export function computeStats(series: MonthlyPoint[], transactions: Transaction[]) {
   const revenue = series.reduce((sum, point) => sum + point.revenue, 0);
   const orders = series.reduce((sum, point) => sum + point.orders, 0);
-  const users = series.length
-    ? series[series.length - 1].users
-    : 0;
+  const users = series.length ? series[series.length - 1].users : 0;
 
   const completed = transactions.filter((t) => t.status === "completed").length;
   const growth =
@@ -107,8 +105,6 @@ export function computeStats(series: MonthlyPoint[], transactions: Transaction[]
     usersChange: 5.2,
     ordersChange: 3.8,
     growthChange: growth,
-    completedRate: transactions.length
-      ? (completed / transactions.length) * 100
-      : 0,
+    completedRate: transactions.length ? (completed / transactions.length) * 100 : 0,
   };
 }

@@ -98,7 +98,11 @@ export async function loadDashboardData(): Promise<DashboardData> {
 
     let [series, rows, customers] = await Promise.all([
       db.collection<MonthlyPoint>("monthly").find({}, noId).sort({ date: 1 }).toArray(),
-      db.collection<Transaction>("transactions").find({}, noId).sort({ date: -1 }).toArray(),
+      db
+        .collection<Transaction>("transactions")
+        .find({}, noId)
+        .sort({ date: -1 })
+        .toArray(),
       db.collection<Customer>("customers").find({}, noId).sort({ name: 1 }).toArray(),
     ]);
 
@@ -106,7 +110,11 @@ export async function loadDashboardData(): Promise<DashboardData> {
       await seedDatabase();
       [series, rows, customers] = await Promise.all([
         db.collection<MonthlyPoint>("monthly").find({}, noId).sort({ date: 1 }).toArray(),
-        db.collection<Transaction>("transactions").find({}, noId).sort({ date: -1 }).toArray(),
+        db
+          .collection<Transaction>("transactions")
+          .find({}, noId)
+          .sort({ date: -1 })
+          .toArray(),
         db.collection<Customer>("customers").find({}, noId).sort({ name: 1 }).toArray(),
       ]);
     }

@@ -30,9 +30,7 @@ export function StatCard({ label, value, change, icon: Icon }: StatCardProps) {
         <span
           className={cn(
             "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px] font-medium",
-            positive
-              ? "bg-success-soft text-success"
-              : "bg-danger-soft text-danger",
+            positive ? "bg-success-soft text-success" : "bg-danger-soft text-danger",
           )}
         >
           {positive ? (

@@ -15,11 +15,7 @@ import { useDashboard } from "@/context/DashboardContext";
 import { useAppTheme } from "@/components/theme/useAppTheme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatCurrency } from "@/lib/utils";
-import {
-  formatCompact,
-  getChartSurface,
-  tooltipStyles,
-} from "@/lib/chartTheme";
+import { formatCompact, getChartSurface, tooltipStyles } from "@/lib/chartTheme";
 
 export function RevenueLineChart() {
   const { series } = useDashboard();
@@ -44,14 +40,21 @@ export function RevenueLineChart() {
       ) : (
         <div className="h-[280px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={series} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+            <ComposedChart
+              data={series}
+              margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+            >
               <defs>
                 <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={surface.line} stopOpacity={0.28} />
                   <stop offset="100%" stopColor={surface.line} stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke={surface.grid} vertical={false} strokeDasharray="3 3" />
+              <CartesianGrid
+                stroke={surface.grid}
+                vertical={false}
+                strokeDasharray="3 3"
+              />
               <XAxis
                 dataKey="month"
                 tickLine={false}

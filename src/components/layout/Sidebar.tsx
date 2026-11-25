@@ -34,7 +34,10 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
         </div>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 py-4" aria-label="Primary">
+      <nav
+        className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 py-4"
+        aria-label="Primary"
+      >
         <div>
           <p className="mb-2 px-2 text-[11px] font-medium text-muted-foreground">
             Workspace
@@ -64,7 +67,9 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
                     <Icon
                       className={cn(
                         "h-4 w-4 shrink-0",
-                        active ? "text-accent" : "text-muted-foreground group-hover:text-foreground",
+                        active
+                          ? "text-accent"
+                          : "text-muted-foreground group-hover:text-foreground",
                       )}
                       aria-hidden
                     />

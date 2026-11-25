@@ -1,13 +1,7 @@
 "use client";
 
 import { Check, Circle } from "lucide-react";
-import {
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { assignmentTasks } from "@/data/mock";
 import { useAppTheme } from "@/components/theme/useAppTheme";
 import { getChartSurface, tooltipStyles } from "@/lib/chartTheme";
@@ -39,7 +33,9 @@ export function AssignmentProgress() {
     <div className="space-y-4">
       <section className="grid gap-3 lg:grid-cols-[280px_1fr]">
         <div className="rounded-[10px] border border-border bg-card p-4 shadow-xs">
-          <h2 className="text-[13px] font-semibold text-foreground">Overall completion</h2>
+          <h2 className="text-[13px] font-semibold text-foreground">
+            Overall completion
+          </h2>
           <p className="mt-0.5 text-[12px] text-muted-foreground">
             Mon–Fri assignment checklist
           </p>

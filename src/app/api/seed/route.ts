@@ -5,7 +5,10 @@ export async function POST() {
   await connection();
 
   if (process.env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "Seeding is disabled in production." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Seeding is disabled in production." },
+      { status: 403 },
+    );
   }
 
   try {

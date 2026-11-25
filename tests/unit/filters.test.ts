@@ -74,9 +74,7 @@ describe("computeStats", () => {
     expect(stats.revenue).toBe(
       monthlySeries.reduce((sum, item) => sum + item.revenue, 0),
     );
-    expect(stats.orders).toBe(
-      monthlySeries.reduce((sum, item) => sum + item.orders, 0),
-    );
+    expect(stats.orders).toBe(monthlySeries.reduce((sum, item) => sum + item.orders, 0));
     expect(stats.users).toBe(monthlySeries[monthlySeries.length - 1].users);
     expect(stats.completedRate).toBeGreaterThan(0);
   });
@@ -95,7 +93,7 @@ describe("transactionsToCsv", () => {
     const csv = transactionsToCsv([
       {
         id: "ORD-1",
-        customer: "=HYPERLINK(\"x\")",
+        customer: '=HYPERLINK("x")',
         email: "a@example.com",
         amount: 120,
         status: "completed",
@@ -105,7 +103,7 @@ describe("transactionsToCsv", () => {
     ]);
     const lines = csv.split("\n");
     expect(lines[0]).toBe("Order ID,Customer,Email,Date,Method,Status,Amount");
-    expect(lines[1]).toContain("\"'=HYPERLINK(\"\"x\"\")\"");
-    expect(lines[1]).toContain("\"Visa, Corp\"");
+    expect(lines[1]).toContain('"\'=HYPERLINK(""x"")"');
+    expect(lines[1]).toContain('"Visa, Corp"');
   });
 });

@@ -40,7 +40,9 @@ export default function SettingsPage() {
         <dl className="mt-4 grid gap-3 sm:grid-cols-3">
           <div className="rounded-[8px] border border-border bg-background p-3">
             <dt className="text-[11px] text-muted-foreground">Stack</dt>
-            <dd className="mt-1 text-[13px] font-medium">Next.js, Tailwind, Recharts, D3</dd>
+            <dd className="mt-1 text-[13px] font-medium">
+              Next.js, Tailwind, Recharts, D3
+            </dd>
           </div>
           <div className="rounded-[8px] border border-border bg-background p-3">
             <dt className="text-[11px] text-muted-foreground">Routing</dt>
@@ -61,7 +63,11 @@ export default function SettingsPage() {
 
       <section className="rounded-[10px] border border-border bg-card p-4 shadow-xs">
         <h2 className="text-[13px] font-semibold text-foreground">Appearance</h2>
-        <div className="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="Theme">
+        <div
+          className="mt-3 grid gap-2 sm:grid-cols-3"
+          role="radiogroup"
+          aria-label="Theme"
+        >
           {themeOptions.map((option) => {
             const active = mounted && theme === option.value;
             return (

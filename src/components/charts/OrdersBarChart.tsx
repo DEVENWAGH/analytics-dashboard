@@ -56,10 +56,7 @@ export function OrdersBarChart() {
   const isDark = theme === "dark";
   const isRetro = theme === "retro";
   const surface = useMemo(() => getChartSurface(theme), [theme]);
-  const colorScale = useMemo(
-    () => buildOrdersColorScale(series, theme),
-    [theme, series],
-  );
+  const colorScale = useMemo(() => buildOrdersColorScale(series, theme), [theme, series]);
   const summary = useMemo(() => summarizeOrders(series), [series]);
 
   return (
@@ -77,9 +74,7 @@ export function OrdersBarChart() {
             <span className="tabular">
               Avg {formatInteger(Math.round(summary.average))}
             </span>
-            <span className="tabular">
-              Peak {formatInteger(summary.peak)}
-            </span>
+            <span className="tabular">Peak {formatInteger(summary.peak)}</span>
             <div className="flex items-center gap-1.5">
               <span>Low</span>
               <div
@@ -108,7 +103,11 @@ export function OrdersBarChart() {
               margin={{ top: 12, right: 8, left: 0, bottom: 4 }}
               barCategoryGap="18%"
             >
-              <CartesianGrid stroke={surface.grid} vertical={false} strokeDasharray="3 3" />
+              <CartesianGrid
+                stroke={surface.grid}
+                vertical={false}
+                strokeDasharray="3 3"
+              />
               <XAxis
                 dataKey="month"
                 tickLine={false}
@@ -125,7 +124,11 @@ export function OrdersBarChart() {
               <Tooltip
                 cursor={{ fill: surface.cursor }}
                 content={
-                  <OrdersTooltip average={summary.average} surface={surface} theme={theme} />
+                  <OrdersTooltip
+                    average={summary.average}
+                    surface={surface}
+                    theme={theme}
+                  />
                 }
               />
               <ReferenceLine

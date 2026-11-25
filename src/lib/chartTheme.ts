@@ -1,11 +1,4 @@
-import {
-  extent,
-  format,
-  interpolateRgb,
-  max,
-  mean,
-  scaleSequential,
-} from "d3";
+import { extent, format, interpolateRgb, max, mean, scaleSequential } from "d3";
 import type { MonthlyPoint } from "@/data/mock";
 
 export type ChartSurface = {
@@ -106,7 +99,9 @@ export function tooltipStyles(surface: ChartSurface, theme: ChartTheme = "light"
     border: `${retro ? 3 : 1}px solid ${surface.tooltipBorder}`,
     background: surface.tooltipBg,
     color: surface.tooltipText,
-    boxShadow: retro ? `4px 4px 0 ${surface.tooltipBorder}` : "0 8px 24px rgba(0,0,0,0.12)",
+    boxShadow: retro
+      ? `4px 4px 0 ${surface.tooltipBorder}`
+      : "0 8px 24px rgba(0,0,0,0.12)",
     fontSize: 12,
     padding: "8px 10px",
   };

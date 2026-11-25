@@ -9,15 +9,12 @@ import { LoadingState, SkeletonCards } from "@/components/ui/LoadingState";
 
 const RevenueLineChart = dynamic(
   () =>
-    import("@/components/charts/RevenueLineChart").then(
-      (mod) => mod.RevenueLineChart,
-    ),
+    import("@/components/charts/RevenueLineChart").then((mod) => mod.RevenueLineChart),
   { ssr: false },
 );
 
 const OrdersBarChart = dynamic(
-  () =>
-    import("@/components/charts/OrdersBarChart").then((mod) => mod.OrdersBarChart),
+  () => import("@/components/charts/OrdersBarChart").then((mod) => mod.OrdersBarChart),
   { ssr: false },
 );
 

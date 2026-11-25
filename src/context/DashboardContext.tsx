@@ -93,7 +93,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       .catch((err: Error) => {
         if (err.name === "AbortError") return;
         if (!hasSnapshot) {
-          setError("Could not load dashboard data. Check that the dev server is running and try again.");
+          setError(
+            "Could not load dashboard data. Check that the dev server is running and try again.",
+          );
         }
         setLoading(false);
       });
@@ -121,10 +123,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       : filterTransactions(allTransactions, range, "", "all");
   }, [allTransactions, range, rangeError]);
 
-  const stats = useMemo(
-    () => computeStats(series, transactions),
-    [series, transactions],
-  );
+  const stats = useMemo(() => computeStats(series, transactions), [series, transactions]);
 
   const resetRange = useCallback(() => setRange(emptyRange), []);
 
@@ -153,12 +152,22 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       customers: data?.customers ?? [],
       stats,
     }),
-    [data, error, loading, range, rangeError, resetRange, retry, series, simulateError, stats, transactions],
+    [
+      data,
+      error,
+      loading,
+      range,
+      rangeError,
+      resetRange,
+      retry,
+      series,
+      simulateError,
+      stats,
+      transactions,
+    ],
   );
 
-  return (
-    <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>
-  );
+  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
 }
 
 export function useDashboard() {

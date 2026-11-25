@@ -109,9 +109,7 @@ export const customersList: Customer[] = customers.map((name, i) => ({
   orders: 2 + Math.floor(seed(i + 5) * 28),
   spent: Math.round(120 + seed(i + 9) * 8400),
   joined: `2025-${String(1 + (i % 12)).padStart(2, "0")}-${String(3 + (i % 24)).padStart(2, "0")}`,
-  status: (["active", "active", "new", "churned"] as const)[
-    Math.floor(seed(i + 2) * 4)
-  ],
+  status: (["active", "active", "new", "churned"] as const)[Math.floor(seed(i + 2) * 4)],
 }));
 
 export type AssignmentTask = {

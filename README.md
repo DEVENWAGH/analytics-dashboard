@@ -18,15 +18,15 @@
 
 ## Stack
 
-| Tool | Role |
-|------|------|
-| Next.js 16 | App, routing, deploy target |
-| TypeScript | Typed components and data |
-| Tailwind CSS 4 | Layout and theme |
-| Recharts | Chart rendering |
-| D3 | Color scales, averages, number formats |
-| Lucide React | Icons |
-| date-fns | Date validation / filtering |
+| Tool           | Role                                   |
+| -------------- | -------------------------------------- |
+| Next.js 16     | App, routing, deploy target            |
+| TypeScript     | Typed components and data              |
+| Tailwind CSS 4 | Layout and theme                       |
+| Recharts       | Chart rendering                        |
+| D3             | Color scales, averages, number formats |
+| Lucide React   | Icons                                  |
+| date-fns       | Date validation / filtering            |
 
 ## Getting started
 
@@ -102,27 +102,35 @@ Root directory should be `analytics-dashboard` if the repo parent also contains 
 ## Screenshots
 
 ### 1. Overview (desktop)
+
 ![Overview desktop](./public/screenshots/overview-desktop.png)
 
 ### 2. Overview (mobile drawer)
+
 ![Overview mobile drawer](./public/screenshots/overview-mobile.png)
 
 ### 3. Analytics
+
 ![Analytics](./public/screenshots/analytics.png)
 
 ### 4. Transactions (with filters)
+
 ![Transactions with filters](./public/screenshots/transactions-filtered.png)
 
 ### 5. Customers
+
 ![Customers](./public/screenshots/customers.png)
 
 ### 6. Settings
+
 ![Settings](./public/screenshots/settings.png)
 
 ### 7. Task progress
+
 ![Task progress page](./public/screenshots/progress.png)
 
 ### 8. Retro / Pixel theme (Overview)
+
 ![Overview retro pixel theme](./public/screenshots/overview-retro.png)
 
 ## Author

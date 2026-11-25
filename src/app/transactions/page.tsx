@@ -18,8 +18,8 @@ export default function TransactionsPage() {
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xl text-[13px] text-muted-foreground">
-          Search by customer name or order ID, filter by status, and export the
-          current date-filtered set as CSV.
+          Search by customer name or order ID, filter by status, and export the current
+          date-filtered set as CSV.
         </p>
         <div className="flex flex-wrap gap-2 self-start">
           <a

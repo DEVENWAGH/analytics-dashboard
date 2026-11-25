@@ -16,9 +16,7 @@ afterEach(() => {
 
 describe("StatCard", () => {
   test("renders label, value, and positive percentage change", () => {
-    render(
-      <StatCard label="Revenue" value="$715,540" change={3.2} icon={DollarSign} />,
-    );
+    render(<StatCard label="Revenue" value="$715,540" change={3.2} icon={DollarSign} />);
 
     expect(screen.getByText("Revenue")).toBeInTheDocument();
     expect(screen.getByText("$715,540")).toBeInTheDocument();
@@ -27,9 +25,7 @@ describe("StatCard", () => {
   });
 
   test("renders negative percentage change", () => {
-    render(
-      <StatCard label="Growth" value="-3.1%" change={-2.4} icon={DollarSign} />,
-    );
+    render(<StatCard label="Growth" value="-3.1%" change={-2.4} icon={DollarSign} />);
     expect(screen.getByText("-3.1%")).toBeInTheDocument();
     expect(screen.getByText("-2.4%")).toBeInTheDocument();
   });
