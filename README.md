@@ -122,6 +122,9 @@ Root directory should be `analytics-dashboard` if the repo parent also contains 
 ### 7. Task progress
 ![Task progress page](./public/screenshots/progress.png)
 
+### 8. Retro / Pixel theme (Overview)
+![Overview retro pixel theme](./public/screenshots/overview-retro.png)
+
 ## Author
 
 Deven Ishwar Wagh  
