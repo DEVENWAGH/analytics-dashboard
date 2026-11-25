@@ -70,7 +70,7 @@ export function TopNavbar({ title, subtitle, onMenuClick }: TopNavbarProps) {
               Deven Wagh
             </p>
             <p className="mt-0.5 text-[11px] leading-none text-muted-foreground">
-              Candidate
+              Analytics Dashboard
             </p>
           </div>
         </div>

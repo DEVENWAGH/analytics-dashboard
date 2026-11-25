@@ -107,10 +107,19 @@ Root directory should be `analytics-dashboard` if the repo parent also contains 
 ### 2. Overview (mobile drawer)
 ![Overview mobile drawer](./public/screenshots/overview-mobile.png)
 
-### 3. Transactions with filters
+### 3. Analytics
+![Analytics](./public/screenshots/analytics.png)
+
+### 4. Transactions (with filters)
 ![Transactions with filters](./public/screenshots/transactions-filtered.png)
 
-### 4. Task progress page
+### 5. Customers
+![Customers](./public/screenshots/customers.png)
+
+### 6. Settings
+![Settings](./public/screenshots/settings.png)
+
+### 7. Task progress
 ![Task progress page](./public/screenshots/progress.png)
 
 ## Author
