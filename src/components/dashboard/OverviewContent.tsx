@@ -35,28 +35,26 @@ const OrdersBarChart = dynamic(
 export function OverviewContent() {
   const { loading, error, retry } = useDashboard();
 
-  if (error) {
-    return <ErrorState message={error} onRetry={retry} />;
-  }
-
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        <SkeletonCards />
-        <LoadingState />
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       <DateRangeFilter />
-      <StatsGrid />
-      <div className="grid gap-4 xl:grid-cols-2">
-        <RevenueLineChart />
-        <OrdersBarChart />
-      </div>
-      <TransactionsTable />
+      {error ? (
+        <ErrorState message={error} onRetry={retry} />
+      ) : loading ? (
+        <>
+          <SkeletonCards />
+          <LoadingState />
+        </>
+      ) : (
+        <>
+          <StatsGrid />
+          <div className="grid gap-4 xl:grid-cols-2">
+            <RevenueLineChart />
+            <OrdersBarChart />
+          </div>
+          <TransactionsTable />
+        </>
+      )}
     </div>
   );
 }
