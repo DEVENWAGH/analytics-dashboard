@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, test } from "vitest";
 import { monthlySeries, transactions } from "@/data/mock";
 import { transactionsToCsv } from "./csv";
 import {
