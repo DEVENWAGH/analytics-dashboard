@@ -1,32 +1,25 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { useDashboard } from "@/context/DashboardContext";
+import { lazy, Suspense } from "react";
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
 import { StatsGrid } from "@/components/stats/StatsGrid";
 import { TransactionsTable } from "@/components/transactions/TransactionsTable";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState, SkeletonCards } from "@/components/ui/LoadingState";
+import { useDashboard } from "@/context/DashboardContext";
 
-const RevenueLineChart = dynamic(
-  () =>
-    import("@/components/charts/RevenueLineChart").then((mod) => mod.RevenueLineChart),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
-    ),
-  },
+const RevenueLineChart = lazy(() =>
+  import("@/components/charts/RevenueLineChart").then((mod) => ({
+    default: mod.RevenueLineChart,
+  })),
 );
 
-const OrdersBarChart = dynamic(
-  () => import("@/components/charts/OrdersBarChart").then((mod) => mod.OrdersBarChart),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
-    ),
-  },
+const OrdersBarChart = lazy(() =>
+  import("@/components/charts/OrdersBarChart").then((mod) => ({
+    default: mod.OrdersBarChart,
+  })),
+);
+
+const chartFallback = (
+  <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
 );
 
 export function OverviewContent() {
@@ -46,8 +39,12 @@ export function OverviewContent() {
         <>
           <StatsGrid />
           <div className="grid gap-4 xl:grid-cols-2">
-            <RevenueLineChart />
-            <OrdersBarChart />
+            <Suspense fallback={chartFallback}>
+              <RevenueLineChart />
+            </Suspense>
+            <Suspense fallback={chartFallback}>
+              <OrdersBarChart />
+            </Suspense>
           </div>
           <TransactionsTable />
         </>

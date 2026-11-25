@@ -1,8 +1,8 @@
 # Northline Analytics Dashboard
 
-1-week Mahity assignment: responsive analytics dashboard built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **Recharts**.
+1-week Mahity assignment: responsive analytics dashboard built with **React**, **TypeScript**, **React Router DOM**, **Tailwind CSS**, and **Recharts**.
 
-> Note: The brief listed React Router. This project uses Next.js file-based routing instead. Confirm with HR if they require CRA + React Router strictly.
+> Note: The `main` branch uses React + Vite + React Router DOM as requested. The earlier Next.js + MongoDB Atlas version is preserved on the `nextjs` branch.
 
 ## Features
 

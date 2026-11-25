@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Responsive analytics dashboard with stats, charts, date filters, and transactions."
+    />
+    <title>Northline Analytics</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("northline-theme");
+          if (saved === "dark" || saved === "retro") {
+            document.documentElement.classList.add(saved);
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body class="min-h-full font-sans text-foreground antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

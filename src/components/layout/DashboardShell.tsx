@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect, useState, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 import { DashboardProvider } from "@/context/DashboardContext";
 import { Sidebar } from "./Sidebar";
@@ -39,7 +37,7 @@ const titles: Record<string, { title: string; subtitle: string }> = {
 };
 
 export function DashboardShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const meta = titles[pathname] ?? { title: "Dashboard", subtitle: "" };
 

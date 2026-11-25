@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "react-router-dom";
 import { Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { mainNav, utilityNav } from "./nav";
@@ -13,7 +10,7 @@ type SidebarProps = {
 };
 
 export function Sidebar({ onNavigate, className }: SidebarProps) {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   return (
     <aside
@@ -54,7 +51,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
               return (
                 <li key={item.href}>
                   <Link
-                    href={item.href}
+                    to={item.href}
                     onClick={onNavigate}
                     className={cn(
                       "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2.5 text-[13px] font-medium transition-colors duration-150 lg:py-2",
@@ -92,7 +89,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
               return (
                 <li key={item.href}>
                   <Link
-                    href={item.href}
+                    to={item.href}
                     onClick={onNavigate}
                     className={cn(
                       "group flex cursor-pointer items-center gap-2.5 rounded-[8px] px-2.5 py-2.5 text-[13px] font-medium transition-colors duration-150 lg:py-2",

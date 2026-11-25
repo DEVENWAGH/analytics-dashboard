@@ -1,21 +1,24 @@
-"use client";
-
-import dynamic from "next/dynamic";
+import { lazy, Suspense } from "react";
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
 import { StatsGrid } from "@/components/stats/StatsGrid";
 import { useDashboard } from "@/context/DashboardContext";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState, SkeletonCards } from "@/components/ui/LoadingState";
 
-const RevenueLineChart = dynamic(
-  () =>
-    import("@/components/charts/RevenueLineChart").then((mod) => mod.RevenueLineChart),
-  { ssr: false },
+const RevenueLineChart = lazy(() =>
+  import("@/components/charts/RevenueLineChart").then((mod) => ({
+    default: mod.RevenueLineChart,
+  })),
 );
 
-const OrdersBarChart = dynamic(
-  () => import("@/components/charts/OrdersBarChart").then((mod) => mod.OrdersBarChart),
-  { ssr: false },
+const OrdersBarChart = lazy(() =>
+  import("@/components/charts/OrdersBarChart").then((mod) => ({
+    default: mod.OrdersBarChart,
+  })),
+);
+
+const chartFallback = (
+  <div className="h-[372px] animate-pulse rounded-[10px] border border-border bg-card" />
 );
 
 export default function AnalyticsPage() {
@@ -62,8 +65,12 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <RevenueLineChart />
-        <OrdersBarChart />
+        <Suspense fallback={chartFallback}>
+          <RevenueLineChart />
+        </Suspense>
+        <Suspense fallback={chartFallback}>
+          <OrdersBarChart />
+        </Suspense>
       </div>
     </div>
   );

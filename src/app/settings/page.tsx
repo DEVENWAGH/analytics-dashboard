@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { useDashboard } from "@/context/DashboardContext";
 import { useAppTheme } from "@/components/theme/useAppTheme";
 import type { AppTheme } from "@/components/theme/ThemeProvider";
@@ -13,21 +10,8 @@ const themeOptions: { value: AppTheme; label: string; description: string }[] = 
 ];
 
 export default function SettingsPage() {
-  const { simulateError, retry, resetRange, source } = useDashboard();
+  const { simulateError, retry, resetRange } = useDashboard();
   const { theme, setTheme, mounted } = useAppTheme();
-  const [seedStatus, setSeedStatus] = useState<string | null>(null);
-
-  async function reseed() {
-    setSeedStatus("Reseeding…");
-    const res = await fetch("/api/seed", { method: "POST" });
-    const body = (await res.json()) as { seeded?: boolean; error?: string };
-    if (!res.ok) {
-      setSeedStatus(body.error ?? "Reseed failed.");
-      return;
-    }
-    setSeedStatus("Database reseeded from sample data.");
-    retry();
-  }
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
@@ -41,22 +25,16 @@ export default function SettingsPage() {
           <div className="rounded-[8px] border border-border bg-background p-3">
             <dt className="text-[11px] text-muted-foreground">Stack</dt>
             <dd className="mt-1 text-[13px] font-medium">
-              Next.js, Tailwind, Recharts, D3
+              React 19, Tailwind, Recharts, D3
             </dd>
           </div>
           <div className="rounded-[8px] border border-border bg-background p-3">
             <dt className="text-[11px] text-muted-foreground">Routing</dt>
-            <dd className="mt-1 text-[13px] font-medium">Next.js App Router</dd>
+            <dd className="mt-1 text-[13px] font-medium">React Router DOM</dd>
           </div>
           <div className="rounded-[8px] border border-border bg-background p-3">
             <dt className="text-[11px] text-muted-foreground">Data source</dt>
-            <dd className="mt-1 text-[13px] font-medium">
-              {source === "mongodb"
-                ? "MongoDB (localhost)"
-                : source === "mock"
-                  ? "Mock data (MongoDB offline)"
-                  : "Loading…"}
-            </dd>
+            <dd className="mt-1 text-[13px] font-medium">Sample dataset</dd>
           </div>
         </dl>
       </section>
@@ -99,7 +77,8 @@ export default function SettingsPage() {
       <section className="rounded-[10px] border border-border bg-card p-4 shadow-xs">
         <h2 className="text-[13px] font-semibold text-foreground">Demo controls</h2>
         <p className="mt-1 text-[13px] text-muted-foreground">
-          Use these to show loading, error handling, and the database during review.
+          Use these to preview loading, error handling, and date filter resets during
+          review.
         </p>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -109,13 +88,6 @@ export default function SettingsPage() {
             className="cursor-pointer rounded-[8px] border border-border bg-card px-3 py-2 text-[13px] font-medium hover:bg-muted"
           >
             Reload data
-          </button>
-          <button
-            type="button"
-            onClick={reseed}
-            className="cursor-pointer rounded-[8px] border border-border bg-card px-3 py-2 text-[13px] font-medium hover:bg-muted"
-          >
-            Reseed MongoDB
           </button>
           <button
             type="button"
@@ -132,12 +104,6 @@ export default function SettingsPage() {
             Reset date filter
           </button>
         </div>
-
-        {seedStatus ? (
-          <p className="mt-3 text-[12px] text-muted-foreground" role="status">
-            {seedStatus}
-          </p>
-        ) : null}
       </section>
     </div>
   );
