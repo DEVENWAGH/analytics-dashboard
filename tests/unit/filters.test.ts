@@ -1,12 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { monthlySeries, transactions } from "@/data/mock";
-import { transactionsToCsv } from "./csv";
+import { transactionsToCsv } from "@/lib/csv";
 import {
   computeStats,
   filterMonthlySeries,
   filterTransactions,
   validateDateRange,
-} from "./filters";
+} from "@/lib/filters";
 
 describe("validateDateRange", () => {
   test("returns null for empty or valid ranges", () => {
