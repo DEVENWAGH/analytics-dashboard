@@ -46,6 +46,7 @@ type Payload = {
 const DashboardContext = createContext<DashboardContextValue | null>(null);
 
 const emptyRange: DateRange = { start: "", end: "" };
+const STORAGE_KEY = "northline-dashboard-snapshot";
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
   const [range, setRange] = useState<DateRange>(emptyRange);
@@ -55,8 +56,24 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [requestKey, setRequestKey] = useState(0);
 
   useEffect(() => {
+    let hasSnapshot = false;
+    if (requestKey === 0) {
+      try {
+        const cached = sessionStorage.getItem(STORAGE_KEY);
+        if (cached) {
+          setData(JSON.parse(cached) as Payload);
+          setLoading(false);
+          hasSnapshot = true;
+        }
+      } catch {
+        // ignore storage access issues
+      }
+    }
+
     const controller = new AbortController();
-    setLoading(true);
+    if (!hasSnapshot) {
+      setLoading(true);
+    }
     setError(null);
 
     fetch("/api/dashboard", { signal: controller.signal, cache: "no-store" })
@@ -67,10 +84,17 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       .then((payload) => {
         setData(payload);
         setLoading(false);
+        try {
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch {
+          // ignore storage quota issues
+        }
       })
       .catch((err: Error) => {
         if (err.name === "AbortError") return;
-        setError("Could not load dashboard data. Check that the dev server is running and try again.");
+        if (!hasSnapshot) {
+          setError("Could not load dashboard data. Check that the dev server is running and try again.");
+        }
         setLoading(false);
       });
 

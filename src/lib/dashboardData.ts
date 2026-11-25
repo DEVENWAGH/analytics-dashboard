@@ -94,14 +94,22 @@ export async function seedDatabase({ reset = false } = {}) {
 
 export async function loadDashboardData(): Promise<DashboardData> {
   try {
-    await seedDatabase();
     const db = await getDb();
 
-    const [series, rows, customers] = await Promise.all([
+    let [series, rows, customers] = await Promise.all([
       db.collection<MonthlyPoint>("monthly").find({}, noId).sort({ date: 1 }).toArray(),
       db.collection<Transaction>("transactions").find({}, noId).sort({ date: -1 }).toArray(),
       db.collection<Customer>("customers").find({}, noId).sort({ name: 1 }).toArray(),
     ]);
+
+    if (rows.length === 0 || series.length === 0 || customers.length === 0) {
+      await seedDatabase();
+      [series, rows, customers] = await Promise.all([
+        db.collection<MonthlyPoint>("monthly").find({}, noId).sort({ date: 1 }).toArray(),
+        db.collection<Transaction>("transactions").find({}, noId).sort({ date: -1 }).toArray(),
+        db.collection<Customer>("customers").find({}, noId).sort({ name: 1 }).toArray(),
+      ]);
+    }
 
     return { series, transactions: rows, customers, source: "mongodb" };
   } catch (error) {
