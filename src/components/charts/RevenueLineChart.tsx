@@ -80,7 +80,7 @@ export function RevenueLineChart() {
                 stroke="none"
                 fill="url(#revenueFill)"
                 tooltipType="none"
-                isAnimationActive={false}
+                isAnimationActive
               />
               <Line
                 type={isRetro ? "stepAfter" : "monotone"}
@@ -89,7 +89,6 @@ export function RevenueLineChart() {
                 strokeWidth={isRetro ? 3 : 2.25}
                 dot={false}
                 activeDot={{ r: 4, strokeWidth: 0, fill: surface.line }}
-                isAnimationActive={false}
               />
             </ComposedChart>
           </ResponsiveContainer>
