@@ -14,6 +14,7 @@ import {
   type Customer,
   type MonthlyPoint,
   type Transaction,
+  type TransactionStatus,
 } from "@/data/mock";
 import {
   computeStats,
@@ -24,12 +25,18 @@ import {
 } from "@/lib/filters";
 
 type DataSource = "sample";
+export type TransactionStatusFilter = "all" | TransactionStatus;
 
 type DashboardContextValue = {
   range: DateRange;
   setRange: (range: DateRange) => void;
   resetRange: () => void;
   rangeError: string | null;
+  search: string;
+  setSearch: (value: string) => void;
+  status: TransactionStatusFilter;
+  setStatus: (value: TransactionStatusFilter) => void;
+  clearTransactionFilters: () => void;
   loading: boolean;
   error: string | null;
   retry: () => void;
@@ -37,6 +44,7 @@ type DashboardContextValue = {
   source: DataSource;
   series: MonthlyPoint[];
   transactions: Transaction[];
+  filteredTransactions: Transaction[];
   customers: Customer[];
   stats: ReturnType<typeof computeStats>;
 };
@@ -47,6 +55,8 @@ const emptyRange: DateRange = { start: "", end: "" };
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
   const [range, setRange] = useState<DateRange>(emptyRange);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<TransactionStatusFilter>("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,9 +83,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       : filterTransactions(mockTransactions, range, "", "all");
   }, [range, rangeError]);
 
+  const filteredTransactions = useMemo(() => {
+    return filterTransactions(transactions, emptyRange, search, status);
+  }, [search, status, transactions]);
+
   const stats = useMemo(() => computeStats(series, transactions), [series, transactions]);
 
   const resetRange = useCallback(() => setRange(emptyRange), []);
+
+  const clearTransactionFilters = useCallback(() => {
+    setSearch("");
+    setStatus("all");
+  }, []);
 
   const retry = useCallback(() => {
     setError(null);
@@ -95,6 +114,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       setRange,
       resetRange,
       rangeError,
+      search,
+      setSearch,
+      status,
+      setStatus,
+      clearTransactionFilters,
       loading,
       error,
       retry,
@@ -102,19 +126,24 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       source: "sample",
       series,
       transactions,
+      filteredTransactions,
       customers: customersList,
       stats,
     }),
     [
+      clearTransactionFilters,
       error,
+      filteredTransactions,
       loading,
       range,
       rangeError,
       resetRange,
       retry,
+      search,
       series,
       simulateError,
       stats,
+      status,
       transactions,
     ],
   );

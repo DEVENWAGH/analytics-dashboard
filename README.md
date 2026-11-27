@@ -1,32 +1,37 @@
 # Northline Analytics Dashboard
 
-1-week Mahity assignment: responsive analytics dashboard built with **React**, **TypeScript**, **React Router DOM**, **Tailwind CSS**, and **Recharts**.
+1-week Mahity assignment: responsive analytics dashboard built with **React**, **TypeScript**, **Vite**, **React Router DOM**, **Tailwind CSS**, **Recharts**, and **D3**.
 
-> Note: The `main` branch uses React + Vite + React Router DOM as requested. The earlier Next.js + MongoDB Atlas version is preserved on the `nextjs` branch.
+> Note: The `main` branch uses React + Vite + React Router DOM as requested. The earlier Next.js + MongoDB version is preserved on the `nextjs` branch.
 
 ## Features
 
-- Sidebar + top navbar (drawer on mobile)
-- Overview with 4 stats cards (Revenue, Users, Orders, Growth)
-- Line chart (monthly revenue) and bar chart (monthly orders) with tooltips
-- Date range filter with reset and invalid-range handling
-- Transactions table: search, status filter, pagination, empty state
+- Sidebar + top navbar (mobile drawer with Escape + backdrop close)
+- Working global navbar search and interactive notifications popover
+- Overview with 4 KPI stat cards (Revenue, Users, Orders, Growth) and dynamic period deltas
+- Monthly revenue area/line chart and monthly orders bar chart with D3 color scale, period average reference line, and custom tooltips
+- Date range filter with month-overlap matching, reset, and invalid-range validation
+- Transactions table: search, status filter, client-side offset pagination (`8` rows/page, auto-reset on filter change), and empty state
+- Customers directory with search, status filter, and client-side offset pagination
 - Loading and error states (demo controls on Settings)
-- Pages: Overview, Analytics, Transactions, Customers, Settings
-- **Task progress** page with completion chart and Mon–Fri checklist
-- Bonus: CSV export on Transactions
+- **Task progress** page with interactive Mon–Fri checklist and completion chart
+- CSV export matching active date, search, and status filters (with spreadsheet formula-injection neutralization)
+- 3 themes: Light (default), Dark, and Retro (8-bit) with anti-FOUC initialization and self-hosted Geist & Silkscreen fonts
 
 ## Stack
 
-| Tool           | Role                                   |
-| -------------- | -------------------------------------- |
-| Next.js 16     | App, routing, deploy target            |
-| TypeScript     | Typed components and data              |
-| Tailwind CSS 4 | Layout and theme                       |
-| Recharts       | Chart rendering                        |
-| D3             | Color scales, averages, number formats |
-| Lucide React   | Icons                                  |
-| date-fns       | Date validation / filtering            |
+| Tool             | Role                                        |
+| ---------------- | ------------------------------------------- |
+| React 19         | Component UI & lazy route/chart splitting   |
+| TypeScript       | Strict typed components, filters, and data  |
+| Vite 8           | Dev server and production bundler           |
+| React Router DOM | Client-side routing (`/overview`, etc.)     |
+| Tailwind CSS 4   | Layout, tokens, and Light/Dark/Retro themes |
+| Recharts         | Responsive SVG chart rendering              |
+| D3               | Color scales, averages, number formats      |
+| Lucide React     | Consistent SVG icons                        |
+| date-fns         | Date validation & month/day filtering       |
+| Vitest + RTL     | Unit and component integration tests        |
 
 ## Getting started
 
@@ -41,97 +46,45 @@ Open the local dev server URL shown in your terminal.
 ## Scripts
 
 ```bash
-bun run dev    # local development
-bun run build  # production build
-bun run start  # serve production build
-bun run lint   # ESLint
+bun run dev          # local development server
+bun run build        # TypeScript check + Vite production build
+bun run preview      # preview production build locally
+bun run test         # run Vitest unit & integration suite
+bun run lint         # run ESLint on JS/MJS config files (typecheck runs via tsc -b)
+bun run format:check # check Prettier formatting
 ```
 
 ## Project structure
 
 ```text
 src/
-  app/                 # routes (overview, analytics, transactions, …)
+  app/                 # route views (overview, analytics, transactions, customers, settings, progress)
   components/
-    layout/            # sidebar, navbar, shell
+    layout/            # sidebar, top navbar (search + notifications), shell
     stats/             # reusable stat cards
     charts/            # revenue line + orders bar
     filters/           # date range filter
     transactions/      # table + status badge
-    progress/          # assignment status chart
-    ui/                # loading, error, empty
-  context/             # dashboard date + data state
-  data/                # mock series, transactions, checklist
-  lib/                 # utils, filters, csv
+    progress/          # interactive assignment checklist + completion chart
+    theme/             # ThemeProvider + useAppTheme hook
+    ui/                # loading, error, empty states
+  context/             # dashboard date, search, status, and derived stats state
+  data/                # deterministic mock series, transactions, customers, checklist
+  lib/                 # utils, filters, csv export, chartTheme
+tests/
+  unit/                # pure filter, stats, and CSV unit tests
+  integration/         # React Testing Library component integration tests
 ```
 
-## Design
+## Data & CSV export
 
-Stripe / Linear inspired light theme:
-
-- Background `#F8F9FA`, white surfaces, charcoal text `#171717`
-- Muted indigo accent `#5B5BD6`
-- Geist typography, 8–12px radius, minimal shadows
-- Dense but calm dashboard layout
-
-## Data / database (MongoDB)
-
-1. Start MongoDB locally or use a MongoDB connection string
-2. Copy `.env.example` to `.env.local` and set `MONGODB_URI`
-3. `bun run dev`: the first request to `/api/dashboard` seeds the database automatically
-
-If MongoDB is not running, the app falls back to built-in sample data.
-
-- Live export: **Transactions → Export CSV** (filtered rows)
-- Static sample: [`public/sample-transactions.csv`](./public/sample-transactions.csv) or **Sample CSV** on the Transactions page
-- Reseed: **Settings → Reseed MongoDB**
+- Uses built-in deterministic sample data in `src/data/mock.ts` (`source: "sample"`).
+- Live export: **Transactions → Export CSV** (exports the currently filtered rows matching date range, search, and status).
+- Static sample: [`public/sample-transactions.csv`](./public/sample-transactions.csv) or **Sample CSV** on the Transactions page.
 
 ## Themes
 
-Light (default), Dark, and Retro (8-bit) via `next-themes`. Switch in the navbar or Settings.
-
-## Deploy (Vercel)
-
-1. Push this folder to GitHub
-2. Import the repo in [Vercel](https://vercel.com)
-3. Framework preset: Next.js (auto-detected)
-4. Deploy
-
-Root directory should be `analytics-dashboard` if the repo parent also contains other folders.
-
-## Screenshots
-
-### 1. Overview (desktop)
-
-![Overview desktop](./public/screenshots/overview-desktop.png)
-
-### 2. Overview (mobile drawer)
-
-![Overview mobile drawer](./public/screenshots/overview-mobile.png)
-
-### 3. Analytics
-
-![Analytics](./public/screenshots/analytics.png)
-
-### 4. Transactions (with filters)
-
-![Transactions with filters](./public/screenshots/transactions-filtered.png)
-
-### 5. Customers
-
-![Customers](./public/screenshots/customers.png)
-
-### 6. Settings
-
-![Settings](./public/screenshots/settings.png)
-
-### 7. Task progress
-
-![Task progress page](./public/screenshots/progress.png)
-
-### 8. Retro / Pixel theme (Overview)
-
-![Overview retro pixel theme](./public/screenshots/overview-retro.png)
+Light (default), Dark, and Retro (8-bit) managed by `src/components/theme/ThemeProvider.tsx` (`localStorage` persistence + pre-render `/theme-init.js` script in `index.html`). Switch in the navbar or Settings.
 
 ## Author
 

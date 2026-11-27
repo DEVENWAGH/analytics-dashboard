@@ -3,6 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --font-geist-sans: "Geist Sans";
+  --font-geist-mono: "Geist Mono";
+  --font-pixel: "Silkscreen";
   --background: #f8f9fa;
   --foreground: #171717;
   --card: #ffffff;

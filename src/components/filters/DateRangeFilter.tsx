@@ -1,5 +1,3 @@
-"use client";
-
 import { RotateCcw } from "lucide-react";
 import { useDashboard } from "@/context/DashboardContext";
 

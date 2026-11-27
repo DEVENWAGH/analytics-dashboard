@@ -1,13 +1,22 @@
 import type { Transaction } from "@/data/mock";
 
-const FORMULA_PREFIX = /^[=+\-@\t\r]/;
+const FORMULA_PREFIX = /^(?:\s*[=+\-@]|[\t\r\n])/;
 
 function csvCell(value: string | number) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? String(value) : "";
+  }
+
   let text = String(value);
-  if (typeof value === "string" && FORMULA_PREFIX.test(text)) {
+  if (FORMULA_PREFIX.test(text)) {
     text = `'${text}`;
   }
   return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function sanitizeFilename(filename: string) {
+  const cleaned = filename.replace(/[^a-zA-Z0-9._-]/g, "_").replace(/^\.+/, "");
+  return cleaned.length > 0 ? cleaned : "export.csv";
 }
 
 export function transactionsToCsv(rows: Transaction[]) {
@@ -26,7 +35,8 @@ export function downloadCsv(filename: string, content: string) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = filename;
+  link.download = sanitizeFilename(filename);
+  link.rel = "noopener";
   link.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

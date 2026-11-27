@@ -1,17 +1,19 @@
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { DollarSign } from "lucide-react";
-import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { afterEach, describe, expect, test, vi } from "vitest";
+import TransactionsPage from "@/app/transactions/page";
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
+import { TopNavbar } from "@/components/layout/TopNavbar";
 import { StatCard } from "@/components/stats/StatCard";
 import { StatusBadge } from "@/components/transactions/StatusBadge";
+import { TransactionsTable } from "@/components/transactions/TransactionsTable";
 import { DashboardProvider } from "@/context/DashboardContext";
-import { customersList, monthlySeries, transactions } from "@/data/mock";
-
-const originalFetch = globalThis.fetch;
+import * as csvLib from "@/lib/csv";
 
 afterEach(() => {
   cleanup();
-  globalThis.fetch = originalFetch;
+  vi.restoreAllMocks();
 });
 
 describe("StatCard", () => {
@@ -39,29 +41,12 @@ describe("StatusBadge", () => {
 });
 
 describe("DateRangeFilter", () => {
-  beforeEach(() => {
-    globalThis.fetch = (async () =>
-      new Response(
-        JSON.stringify({
-          series: monthlySeries,
-          transactions,
-          customers: customersList,
-          source: "mock",
-        }),
-        { status: 200, headers: { "Content-Type": "application/json" } },
-      )) as typeof fetch;
-  });
-
-  test("shows validation error when start date is after end date and resets cleanly", async () => {
+  test("shows validation error when start date is after end date and resets cleanly", () => {
     render(
       <DashboardProvider>
         <DateRangeFilter />
       </DashboardProvider>,
     );
-
-    await act(async () => {
-      await Promise.resolve();
-    });
 
     const startInput = screen.getByLabelText("Start");
     const endInput = screen.getByLabelText("End");
@@ -75,5 +60,61 @@ describe("DateRangeFilter", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /reset/i }));
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+});
+
+describe("TransactionsPage & TransactionsTable", () => {
+  test("resets pagination when filters change and exports only the active filtered rows", () => {
+    const downloadSpy = vi.spyOn(csvLib, "downloadCsv").mockImplementation(() => {});
+
+    render(
+      <MemoryRouter>
+        <DashboardProvider>
+          <TransactionsPage />
+        </DashboardProvider>
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /next page/i }));
+    expect(screen.getByText(/^Page 2 of /)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/filter by status/i), {
+      target: { value: "failed" },
+    });
+    expect(screen.getByText(/^Page 1 of /)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /export csv/i }));
+    expect(downloadSpy).toHaveBeenCalledTimes(1);
+    const csvContent = downloadSpy.mock.calls[0][1];
+    const dataLines = csvContent.trim().split("\n").slice(1);
+    expect(dataLines.length).toBeGreaterThan(0);
+    expect(dataLines.every((line) => line.includes(",failed,"))).toBe(true);
+  });
+});
+
+describe("TopNavbar", () => {
+  test("syncs global search with TransactionsTable and toggles notifications dialog", () => {
+    render(
+      <MemoryRouter initialEntries={["/transactions"]}>
+        <DashboardProvider>
+          <TopNavbar title="Transactions" onMenuClick={() => {}} />
+          <TransactionsTable />
+        </DashboardProvider>
+      </MemoryRouter>,
+    );
+
+    const navSearch = screen.getByLabelText(/search orders or customers/i);
+    fireEvent.change(navSearch, { target: { value: "Ava Patel" } });
+    expect(screen.getByLabelText(/search by customer or order id/i)).toHaveValue(
+      "Ava Patel",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /notifications/i }));
+    expect(
+      screen.getByRole("dialog", { name: /workspace notifications/i }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /mark all read/i }));
+    expect(screen.getByText(/caught up/i)).toBeInTheDocument();
   });
 });

@@ -1,5 +1,3 @@
-"use client";
-
 import { Gamepad2, Moon, Sun, type LucideIcon } from "lucide-react";
 import { useAppTheme } from "@/components/theme/useAppTheme";
 import type { AppTheme } from "@/components/theme/ThemeProvider";

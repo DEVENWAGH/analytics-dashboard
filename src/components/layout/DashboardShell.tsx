@@ -39,7 +39,8 @@ const titles: Record<string, { title: string; subtitle: string }> = {
 export function DashboardShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const meta = titles[pathname] ?? { title: "Dashboard", subtitle: "" };
+  const normalizedPath = pathname.replace(/\/+$/, "") || "/";
+  const meta = titles[normalizedPath] ?? { title: "Dashboard", subtitle: "" };
 
   useEffect(() => {
     setMobileOpen(false);

@@ -87,7 +87,7 @@ export const monthlySeries: MonthlyPoint[] = [
 
 export const transactions: Transaction[] = Array.from({ length: 64 }, (_, i) => {
   const day = 1 + Math.floor(seed(i + 3) * 27);
-  const month = 1 + Math.floor(seed(i + 11) * 11);
+  const month = 1 + Math.floor(seed(i + 11) * 12);
   const customer = customers[i % customers.length];
   const amount = Math.round(28 + seed(i + 21) * 920) * (seed(i) > 0.85 ? 4 : 1);
 
@@ -125,7 +125,7 @@ export const assignmentTasks: AssignmentTask[] = [
     day: "Monday",
     title: "Setup and shell",
     items: [
-      { id: "m1", label: "Next.js + Tailwind + folder structure", done: true },
+      { id: "m1", label: "React + Vite + Tailwind + folder structure", done: true },
       { id: "m2", label: "Sidebar + top navbar layout", done: true },
       { id: "m3", label: "Mobile drawer navigation", done: true },
     ],
@@ -136,7 +136,7 @@ export const assignmentTasks: AssignmentTask[] = [
     title: "Stats and routes",
     items: [
       { id: "t1", label: "4 statistics cards with icons and % change", done: true },
-      { id: "t2", label: "5 pages with App Router routes", done: true },
+      { id: "t2", label: "6 routes with React Router DOM", done: true },
     ],
   },
   {
@@ -165,8 +165,8 @@ export const assignmentTasks: AssignmentTask[] = [
     title: "Ship",
     items: [
       { id: "f1", label: "README + screenshots", done: true },
-      { id: "f2", label: "GitHub push + Vercel/Netlify deploy", done: false },
-      { id: "f3", label: "Bonus: dark theme + CSV export", done: true },
+      { id: "f2", label: "GitHub push + Vercel deploy", done: true },
+      { id: "f3", label: "Bonus: dark/retro themes + CSV export", done: true },
     ],
   },
 ];

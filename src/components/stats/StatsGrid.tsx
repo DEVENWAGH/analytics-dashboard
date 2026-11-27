@@ -1,5 +1,3 @@
-"use client";
-
 import { DollarSign, Package, TrendingUp, Users } from "lucide-react";
 import { useDashboard } from "@/context/DashboardContext";
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/utils";

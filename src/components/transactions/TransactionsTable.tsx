@@ -1,9 +1,6 @@
-"use client";
-
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { useDashboard } from "@/context/DashboardContext";
-import { filterTransactions } from "@/lib/filters";
+import { useDashboard, type TransactionStatusFilter } from "@/context/DashboardContext";
 import { formatCurrency } from "@/lib/utils";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StatusBadge } from "./StatusBadge";
@@ -11,23 +8,21 @@ import { StatusBadge } from "./StatusBadge";
 const PAGE_SIZE = 8;
 
 export function TransactionsTable() {
-  const { transactions: ranged, range, rangeError } = useDashboard();
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
-  const [page, setPage] = useState(1);
+  const {
+    filteredTransactions: rows,
+    range,
+    search,
+    setSearch,
+    status,
+    setStatus,
+    clearTransactionFilters,
+  } = useDashboard();
+  const filterKey = `${range.start}|${range.end}|${search}|${status}`;
+  const [pageState, setPageState] = useState({ key: filterKey, page: 1 });
 
-  const rows = useMemo(() => {
-    const source = rangeError ? ranged : ranged;
-    return filterTransactions(
-      source,
-      rangeError ? { start: "", end: "" } : range,
-      search,
-      status,
-    );
-  }, [range, rangeError, ranged, search, status]);
-
+  const currentPage = pageState.key === filterKey ? pageState.page : 1;
   const pageCount = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
-  const safePage = Math.min(page, pageCount);
+  const safePage = Math.min(currentPage, pageCount);
   const pageRows = rows.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   return (
@@ -51,7 +46,7 @@ export function TransactionsTable() {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setPage(1);
+                setPageState({ key: filterKey, page: 1 });
               }}
               placeholder="Search customer or order ID"
               className="h-9 w-full rounded-[8px] border border-border bg-background pr-3 pl-8 text-[13px] outline-none focus:border-accent"
@@ -63,8 +58,8 @@ export function TransactionsTable() {
             <select
               value={status}
               onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(1);
+                setStatus(e.target.value as TransactionStatusFilter);
+                setPageState({ key: filterKey, page: 1 });
               }}
               className="h-9 w-full cursor-pointer rounded-[8px] border border-border bg-background px-2.5 text-[13px] outline-none focus:border-accent sm:w-[140px]"
             >
@@ -87,9 +82,8 @@ export function TransactionsTable() {
               type="button"
               className="cursor-pointer rounded-[8px] border border-border bg-card px-3 py-1.5 text-[12px] font-medium hover:bg-muted"
               onClick={() => {
-                setSearch("");
-                setStatus("all");
-                setPage(1);
+                clearTransactionFilters();
+                setPageState({ key: filterKey, page: 1 });
               }}
             >
               Clear table filters
@@ -145,7 +139,12 @@ export function TransactionsTable() {
               <button
                 type="button"
                 disabled={safePage <= 1}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                onClick={() =>
+                  setPageState({
+                    key: filterKey,
+                    page: Math.max(1, safePage - 1),
+                  })
+                }
                 className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-[8px] border border-border disabled:cursor-not-allowed disabled:opacity-40 hover:bg-muted"
                 aria-label="Previous page"
               >
@@ -154,7 +153,12 @@ export function TransactionsTable() {
               <button
                 type="button"
                 disabled={safePage >= pageCount}
-                onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+                onClick={() =>
+                  setPageState({
+                    key: filterKey,
+                    page: Math.min(pageCount, safePage + 1),
+                  })
+                }
                 className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-[8px] border border-border disabled:cursor-not-allowed disabled:opacity-40 hover:bg-muted"
                 aria-label="Next page"
               >
